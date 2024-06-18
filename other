@@ -75,7 +75,7 @@ function toggleCamLock()
         if currentTime - lastToggleTime >= config.responseTime then
             getgenv().camLockEnabled = not getgenv().camLockEnabled
 
-            if getgenv().camLockEnabled then
+            if getgenv().rizzyLock and getgenv().camLockEnabled then
                 target = getClosestTarget()
             else
                 target = nil
@@ -93,7 +93,7 @@ function onInputBegan(input, gameProcessed)
 end
 
 function onRenderStep(deltaTime)
-    if getgenv().camLockEnabled then
+    if getgenv().rizzyLock and getgenv().camLockEnabled then
         local camera = workspace.CurrentCamera
         local cameraPos = camera.CFrame.Position
 
