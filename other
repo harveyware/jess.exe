@@ -27,7 +27,7 @@ local config = {
 -- Variables
 local player = Players.LocalPlayer
 local mouse = player:GetMouse()
-local camLockEnabled = false -- keep this false
+getgenv().camLockEnabled = false
 local target
 
 -- Timestamp to control response time
@@ -73,20 +73,18 @@ end
 local function toggleCamLock()
     local currentTime = tick()
     if currentTime - lastToggleTime >= config.responseTime then
-        camLockEnabled = not camLockEnabled
-        if camLockEnabled then
+        getgenv().camLockEnabled = not getgenv().camLockEnabled
+        if getgenv().camLockEnabled then
             target = getClosestTarget()
-            displayNotification("Lock ON")
         else
             target = nil
-            displayNotification("Lock OFF")
         end
         lastToggleTime = currentTime
     end
 end
 
 local function smartFlick()
-    if camLockEnabled and target then
+    if getgenv().camLockEnabled and target then
         local camera = workspace.CurrentCamera
         local predictedPosition = target.Position -- Directly using the target's position for flick
         camera.CFrame = CFrame.new(camera.CFrame.Position, predictedPosition)
@@ -107,7 +105,7 @@ local function onInputBegan(input, gameProcessed)
 end
 
 local function onRenderStep(deltaTime)
-    if camLockEnabled then
+    if getgenv().camLockEnabled then
         local camera = workspace.CurrentCamera
         local cameraPos = camera.CFrame.Position
 
