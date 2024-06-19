@@ -71,18 +71,16 @@ end
 function toggleCamLock()
     local currentTime = tick()
     
-    if getgenv().rizzyLock then
-        if currentTime - lastToggleTime >= config.responseTime then
-            getgenv().camLockEnabled = not getgenv().camLockEnabled
+    if currentTime - lastToggleTime >= config.responseTime and getgenv().rizzyLock then
+        getgenv().camLockEnabled = not getgenv().camLockEnabled
 
-            if getgenv().rizzyLock and getgenv().camLockEnabled then
-                target = getClosestTarget()
-            else
-                target = nil
-            end
-
-            lastToggleTime = currentTime
+        if getgenv().rizzyLock and getgenv().camLockEnabled then
+            target = getClosestTarget()
+        else
+            target = nil
         end
+
+        lastToggleTime = currentTime
     end
 end
 
@@ -119,13 +117,6 @@ function onRenderStep(deltaTime)
             local distanceToTarget = (predictedPosition - cameraPos).magnitude
             local interpolationFactor = math.clamp(distanceToTarget / config.distanceThreshold, config.interpolationFactorMin, config.interpolationFactorMax)
             local currentSmoothness = config.smoothness + (config.maxSmoothnessSpeed - config.smoothness) * interpolationFactor
-
-            local randomOffset = Vector3.new(
-                math.random() * config.randomnessFactor - config.randomnessFactor / 2,
-                math.random() * config.randomnessFactor - config.randomnessFactor / 2,
-                math.random() * config.randomnessFactor - config.randomnessFactor / 2
-            )
-            targetCFrame = targetCFrame * CFrame.new(randomOffset)
 
             camera.CFrame = camera.CFrame:Lerp(targetCFrame, currentSmoothness)
         end
