@@ -71,10 +71,10 @@ end
 function toggleCamLock()
     local currentTime = tick()
     
-    if currentTime - lastToggleTime >= config.responseTime and getgenv().rizzyLock then
+    if currentTime - lastToggleTime >= config.responseTime then
         getgenv().camLockEnabled = not getgenv().camLockEnabled
 
-        if getgenv().rizzyLock and getgenv().camLockEnabled then
+        if getgenv().camLockEnabled then
             target = getClosestTarget()
         else
             target = nil
